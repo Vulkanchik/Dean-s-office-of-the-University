@@ -1,0 +1,92 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+// Структуры для хранения данных
+struct Student {
+    string name;
+    string surname;
+    string patronymic;
+    string group;
+    vector<bool> attendance;
+    vector<int> grades;
+};
+
+struct Teacher {
+    string name;
+    string surname;
+    string patronymic;
+    string position;
+    int qualification;
+    vector<string> subjects;
+    vector<int> workload;
+};
+
+// Класс для работы с информационной системой
+class UniversitySystem {
+public:
+    // Конструктор по умолчанию
+    UniversitySystem() {}
+
+    // Добавление нового студента
+    void addStudent(Student student) {
+        students.push_back(student);
+    }
+
+    // Добавление нового преподавателя
+    void addTeacher(Teacher teacher) {
+        teachers.push_back(teacher);
+    }
+
+    // Установка посещаемости студента
+    void setAttendance(int studentIndex, vector<bool> attendance) {
+        students[studentIndex].attendance = attendance;
+    }
+
+    // Установка оценок студента
+    void setGrades(int studentIndex, vector<int> grades) {
+        students[studentIndex].grades = grades;
+    }
+
+    // Установка учебной нагрузки преподавателя
+    void setWorkload(int teacherIndex, vector<int> workload) {
+        teachers[teacherIndex].workload = workload;
+    }
+
+private:
+    vector<Student> students;  // Список студентов
+    vector<Teacher> teachers;  // Список преподавателей
+};
+
+int main() {
+    // Создание объекта информационной системы
+    UniversitySystem system;
+
+    // Добавление студентов
+    Student student1 = {"Иван", "Иванов", "Иванович", "М-101", {}, {}};
+    system.addStudent(student1);
+
+    Student student2 = {"Петр", "Петров", "Петрович", "М-102", {}, {}};
+    system.addStudent(student2);
+
+    // Добавление преподавателей
+    Teacher teacher1 = {"Алексей", "Алексеев", "Алексеевич", "Преподаватель", 2, {"Математика", "Физика"}, {}};
+    system.addTeacher(teacher1);
+
+    Teacher teacher2 = {"Сергей", "Сергеев", "Сергеевич", "Старший преподаватель", 3, {"Программирование", "Базы данных"}, {}};
+    system.addTeacher(teacher2);
+
+    // Установка посещаемости студентов
+    vector<bool> attendance1 = {true, true, false, true, true};
+    system.setAttendance(0, attendance1);
+
+    vector<bool> attendance2 = {true, true, true, true, false};
+    system.setAttendance(1, attendance2);
+
+    // Установка оценок студентов
+    vector<int> grades1 = {4, 5, 3, 5, 4};
+    system.setGrades(0, grades1);
+
+    vector<int> grades2 = {5, 4, 5, 4,
