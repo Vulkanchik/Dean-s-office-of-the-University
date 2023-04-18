@@ -90,3 +90,51 @@ int main() {
     system.setGrades(0, grades1);
 
     vector<int> grades2 = {5, 4, 5, 4,
+    
+    class Student {
+public:
+    // конструктор класса
+    Student(string name, string surname, string group, string department, int yearOfBirth)
+        : m_name(name), m_surname(surname), m_group(group), m_department(department), m_yearOfBirth(yearOfBirth) {}
+    
+    // методы доступа к полям класса
+    string getName() const { return m_name; }
+    string getSurname() const { return m_surname; }
+    string getGroup() const { return m_group; }
+    string getDepartment() const { return m_department; }
+    int getYearOfBirth() const { return m_yearOfBirth; }
+    
+private:
+    // поля класса
+    string m_name;
+    string m_surname;
+    string m_group;
+    string m_department;
+    int m_yearOfBirth;
+};
+
+class Attendance {
+public:
+    Attendance(bool present, Date date)
+        : m_present(present), m_date(date) {}
+    
+    bool isPresent() const { return m_present; }
+    Date getDate() const { return m_date; }
+    
+private:
+    bool m_present;
+    Date m_date;
+};
+
+class Grades {
+public:
+    Grades(double mark, string subject)
+        : m_mark(mark), m_subject(subject) {}
+    
+    double getMark() const { return m_mark; }
+    string getSubject() const { return m_subject; }
+    
+private:
+    double m_mark;
+    string m_subject;
+};
