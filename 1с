@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <algorithm>
+#include <sstream>
+#include <ctime>
+#include <boost/program_options.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <SQLiteCpp/SQLiteCpp.h>
+#include <ncurses.h>
+
+using namespace std;
+
+// Структуры данных
+
+struct Student {
+    int id;
+    string name;
+    string group;
+};
+
+struct Teacher {
+    int id;
+    string name;
+    string position;
+};
+
+struct Course {
+    int id;
+    string name;
+    int teacher_id;
+};
+
+struct Lesson {
+    int id;
+    int course_id;
+    int day;
+    int time;
+};
+
+// Функции для работы с базой данных
+
+void init_database(SQLite::Database& db) {
+    // Создание таблиц
+    db.exec("CREATE TABLE IF NOT EXISTS students ("
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "name TEXT,"
+            "group TEXT"
+            ")");
+    db.exec("CREATE TABLE IF NOT EXISTS teachers ("
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "name TEXT,"
+            "position TEXT"
+            ")");
+    db.exec("CREATE TABLE IF NOT EXISTS courses ("
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "name TEXT,"
+            "teacher_id INTEGER,"
+            "FOREIGN KEY (teacher_id) REFERENCES teachers(id)"
+            ")");
+    db.exec("CREATE TABLE IF NOT EXISTS lessons ("
+            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            "course_id INTEGER,"
+            "day INTEGER,"
+            "time INTEGER,"
+            "FOREIGN KEY (course_id) REFERENCES courses(id)"
+            ")");
+}
+
+vector<Student> get_students(SQLite::Database& db) {
+    vector<Student> students;
+    SQLite::Statement query(db, "SELECT id, name, group FROM students ORDER BY name");
+    while (query.executeStep())
