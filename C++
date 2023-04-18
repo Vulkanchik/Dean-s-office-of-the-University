@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+using namespace std;
+
+// Структура для хранения информации о студенте
+struct Student {
+    string name; // Имя студента
+    string surname; // Фамилия студента
+    string patronymic; // Отчество студента
+    string group; // Группа студента
+    int attendance; // Посещаемость студента
+    float gpa; // Средний балл студента
+};
+
+// Функция для вывода информации о студенте
+void printStudent(const Student& s) {
+    cout << "ФИО: " << s.surname << " " << s.name << " " << s.patronymic << endl;
+    cout << "Группа: " << s.group << endl;
+    cout << "Посещаемость: " << s.attendance << endl;
+    cout << "Средний балл: " << s.gpa << endl;
+}
+
+// Функция для чтения информации о студентах из файла
+vector<Student> readStudentsFromFile(string fileName) {
+    vector<Student> students; // Вектор для хранения студентов
+    ifstream fin(fileName); // Открытие файла для чтения
+
+    if (!fin.is_open()) { // Проверка, удалось ли открыть файл
+        cout << "Ошибка открытия файла " << fileName << endl;
+        return students;
+    }
+
+    string line;
+    while (getline(fin, line)) { // Построчное чтение файла
+        Student s;
+        // Разделение строки на поля и заполнение структуры Student
+        int pos = line.find(",");
+        s.name = line.substr(0, pos);
+        line.erase(0, pos + 1);
+        pos = line.find(",");
+        s.surname = line.substr(0, pos);
+        line.erase(0, pos + 1);
+        pos = line.find(",");
+        s.patronymic = line.substr(0, pos);
+        line.erase(0, pos + 1);
+        pos = line.find(",");
+        s.group = line.substr(0, pos);
+        line.erase(0, pos + 1);
+        pos = line.find(",");
+        s.attendance = stoi(line.substr(0, pos));
+        line.erase(0, pos + 1);
+        s.gpa = stof(line);
+        students.push_back(s); // Добавление студента в вектор
+    }
+
+    fin.close(); // Закрытие файла
+    return students;
+}
+
+// Функция для записи информации о студентах в файл
+void writeStudentsToFile(string fileName, const vector<Student>& students) {
+    ofstream fout(fileName); // Открытие файла для записи
+
+    if (!fout.is_open()) { // Проверка, удалось ли открыть файл
+        cout << "Ошибка открытия файла " << fileName << endl;
+        return;
+    }
+
+    for (const auto& s : students) { // Построчная запись студентов в файл
+        fout << s.name << "," << s.surname << "," << s.patronymic << ",";
+        fout << s.group << ","
